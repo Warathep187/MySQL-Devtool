@@ -13,7 +13,7 @@ const DatabaseTable = ({ tableName }) => {
     const fetchDataHandler = async () => {
         if (tableName !== "") {
             try {
-                const { data } = await axios.get(`http://localhost:8000/api/table/${tableName}`);
+                const { data } = await axios.get(`http://localhost:80/api/table/${tableName}`);
                 setData(data.data);
                 setHeader(data.desc);
                 setLength(data.data_length);
@@ -28,7 +28,7 @@ const DatabaseTable = ({ tableName }) => {
     }, [tableName]);
 
     const setColumnFuncHandler = (col, rowIndex, colIndex) => {
-        const text = col.length > 16 ? col.substring(0, 16) : col;
+        const text = col.length > 18 ? col.substring(0, 16) + ".." : col;
         return (
             <td
                 onClick={() => {
@@ -45,7 +45,10 @@ const DatabaseTable = ({ tableName }) => {
     return (
         <div className="mt-4">
             <div className="w-100">
-                <Modal show={isShowModal} onHide={() => setIsShowModal(false)}>
+                <Modal show={isShowModal} onHide={() => {
+                    setSelectedRow(0);
+                    setIsShowModal(false);
+                }}>
                     <Modal.Header closeButton>
                         <Modal.Title>{tableName}</Modal.Title>
                     </Modal.Header>

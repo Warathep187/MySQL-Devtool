@@ -14,7 +14,7 @@ function Home() {
             return alert("โปรดกรอกชื่อฐานข้อมูลด้วย");
         }
         try {
-            const { data } = await axios.post("http://localhost:8000/api/create-connection", {
+            const { data } = await axios.post("http://localhost:80/api/create-connection", {
                 database: text,
             });
             alert(data.message);

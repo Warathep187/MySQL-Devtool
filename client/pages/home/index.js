@@ -12,7 +12,7 @@ const Home = () => {
 
     const fetchTablesHandler = async () => {
         try {
-            const { data } = await axios.get("http://localhost:8000/api/tables");
+            const { data } = await axios.get("http://localhost:80/api/tables");
             setTables(data.tables);
             setSelectedTable("");
         } catch (e) {
