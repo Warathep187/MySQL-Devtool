@@ -12,7 +12,7 @@ const Home = () => {
 
     const fetchTablesHandler = async () => {
         try {
-            const { data } = await axios.get("http://localhost:80/api/tables");
+            const { data } = await axios.get("http://localhost:800/api/mysql/tables");
             setTables(data.tables);
             setSelectedTable("");
         } catch (e) {
@@ -29,7 +29,7 @@ const Home = () => {
         <Container fluid>
             <Row>
                 <Col md={2}>
-                    <p className="display-4">{tables.length} Tables</p>
+                    <p className="display-5">{tables.length} Tables</p>
                     {tables.map((table, index) => {
                         return (
                             <div className="w-100" key={index}>

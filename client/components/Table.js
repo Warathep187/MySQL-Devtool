@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import { Table, Modal, Button } from "react-bootstrap";
 import axios from "axios";
+import TableStructure from "./TableStructure";
 
 const DatabaseTable = ({ tableName }) => {
     const [header, setHeader] = useState([]);
@@ -13,7 +14,7 @@ const DatabaseTable = ({ tableName }) => {
     const fetchDataHandler = async () => {
         if (tableName !== "") {
             try {
-                const { data } = await axios.get(`http://localhost:80/api/table/${tableName}`);
+                const { data } = await axios.get(`http://localhost:800/api/mysql/tables/${tableName}`);
                 setData(data.data);
                 setHeader(data.desc);
                 setLength(data.data_length);
@@ -28,9 +29,15 @@ const DatabaseTable = ({ tableName }) => {
     }, [tableName]);
 
     const setColumnFuncHandler = (col, rowIndex, colIndex) => {
-        const text = col.length > 18 ? col.substring(0, 16) + ".." : col;
+        let text = "";
+        if(!col) {
+            text = "NULL"
+        } else {
+            text = col.length > 18 ? col.substring(0, 16) + ".." : col;
+        }
         return (
             <td
+                style={{cursor: "pointer"}}
                 onClick={() => {
                     setSelectedRow(rowIndex);
                     setIsShowModal(true);
@@ -44,6 +51,8 @@ const DatabaseTable = ({ tableName }) => {
 
     return (
         <div className="mt-4">
+            <p className="fw-bold mb-1">Table Structure</p>
+            <TableStructure desc={header} />
             <div className="w-100">
                 <Modal show={isShowModal} onHide={() => {
                     setSelectedRow(0);
@@ -76,12 +85,12 @@ const DatabaseTable = ({ tableName }) => {
                 ) : (
                     <>
                         <div className="d-flex justify-content-between align-items-center mb-1">
-                            <p className="fw-bold">{length} Rows</p>
+                            <p className="fw-bold mb-1">{length} Rows</p>
                             <Button variant="outline-primary p-2" onClick={fetchDataHandler}>
                                 🔃
                             </Button>
                         </div>
-                        <Table striped bordered hover variant="dark">
+                        <Table striped bordered hover variant="light">
                             <thead>
                                 <tr>
                                     {header.map((head, index) => (
